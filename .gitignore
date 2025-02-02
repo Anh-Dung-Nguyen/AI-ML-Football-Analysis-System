@@ -1,4 +1,10 @@
 yolov8x.pt
-runs/detect/predict/*.avi
+runs
 contratkey
 contratkey.pub
+torch
+torchaudio
+torchgen
+torchvision
+ultralytics
+yolov8x
