@@ -1,2 +1,4 @@
 yolov8x.pt
 runs/detect/predict/*.avi
+contratkey
+contratkey.pub
