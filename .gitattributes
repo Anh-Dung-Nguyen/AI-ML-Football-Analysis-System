@@ -7,3 +7,4 @@ yolov5lu.pt filter=lfs diff=lfs merge=lfs -text
 football-players-detection-1/ filter=lfs diff=lfs merge=lfs -text
 models/ filter=lfs diff=lfs merge=lfs -text
 run/ filter=lfs diff=lfs merge=lfs -text
+runs/ filter=lfs diff=lfs merge=lfs -text
