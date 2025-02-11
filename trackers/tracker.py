@@ -3,16 +3,27 @@ import supervision as sv
 import pickle
 import os
 import numpy as np
+import pandas as pd
 import cv2
 import sys
 sys.path.append('../')
-from utils import get_center_of_bbox, get_bbox_width
-import pandas as pd
+from utils import get_center_of_bbox, get_bbox_width, get_foot_position
 
 class Tracker:
     def __init__(self, model_path):
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
+
+    def add_position_to_tracks(self, tracks):
+        for object, object_tracks in tracks.items():
+            for frame_num, track in enumerate(object_tracks):
+                for track_id, track_info in track.items():
+                    bbox = track_info['bbox']
+                    if object == 'ball':
+                        position = get_center_of_bbox(bbox)
+                    else:
+                        position = get_foot_position(bbox)
+                    tracks[object][frame_num][track_id]['position'] = position
 
     def interpolate_ball_positions(self, ball_positions):
         ball_positions = [x.get(1, {}).get('bbox', []) for x in ball_positions]
@@ -160,14 +171,20 @@ class Tracker:
 
         team_ball_control_till_frame = team_ball_control[: frame_num + 1]
 
-        team_1_num_frame = team_ball_control_till_frame[team_ball_control_till_frame == 1].shape[0]
-        team_2_num_frame = team_ball_control_till_frame[team_ball_control_till_frame == 2].shape[0]
+        team_1_num_frame = (team_ball_control_till_frame == 1).sum()
+        team_2_num_frame = (team_ball_control_till_frame == 2).sum()
 
-        team_1 = team_1_num_frame / (team_1_num_frame + team_2_num_frame)
-        team_2 = team_2_num_frame / (team_1_num_frame + team_2_num_frame)
+        total_frame = team_1_num_frame + team_2_num_frame
 
-        cv2.putText(frame, f"Team 1 Ball Control: {team_1 * 100:.2f}%", (1400, 900), cv2.FONT_HERSHEY8SIMPLEX, 1, (0, 0, 0), 3)
-        cv2.putText(frame, f"Team 2 Ball Control: {team_2 * 100:.2f}%", (1400, 950), cv2.FONT_HERSHEY8SIMPLEX, 1, (0, 0, 0), 3)
+        if total_frame == 0:
+            team_1 = 0
+            team_2 = 0
+        else:
+            team_1 = team_1_num_frame / total_frame
+            team_2 = team_2_num_frame / total_frame
+
+        cv2.putText(frame, f"Team 1 Ball Control: {team_1 * 100:.2f}%", (1400, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
+        cv2.putText(frame, f"Team 2 Ball Control: {team_2 * 100:.2f}%", (1400, 950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
 
         return frame
 
