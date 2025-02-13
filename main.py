@@ -6,6 +6,7 @@ from team_assigner import TeamAssigner
 from player_ball_assigner import PlayerBallAssigner
 from camera_movement_estimator import CameraMovementEstimator
 from view_transformer import ViewTransformer
+from speed_and_distance_estimator import SpeedAndDistanceEstimator
 
 def main():
     # Lecture la video
@@ -41,6 +42,10 @@ def main():
 
     #    break
     
+    # Estimation la vitesse et la distance
+    speed_and_distance_estimator = SpeedAndDistanceEstimator()
+    speed_and_distance_estimator.add_speed_and_distance_to_tracks(tracks)
+
     # Assigner des joueurs de l'équipe
     team_assigner = TeamAssigner()
     team_assigner.assign_team_color(video_frames[0], tracks['players'][0])
@@ -63,10 +68,8 @@ def main():
             tracks['players'][frame_num][assigned_player]['has_ball'] = True
             team_ball_control.append(tracks['players'][frame_num][assigned_player]['team'])
         else:
-            if team_ball_control:
-                team_ball_control.append(team_ball_control[-1])
-            else:
-                team_ball_control.append(0)
+            team_ball_control.append(team_ball_control[-1])
+
     
     team_ball_control = np.array(team_ball_control)
         
@@ -77,6 +80,9 @@ def main():
 
     ## Dessiner la mouvement du caméra
     output_video_frames = camera_movement_estimator.draw_camera_movement(output_video_frames, camera_movement_per_frame)
+
+    ## Dessiner la distance et la vitesse
+    speed_and_distance_estimator.draw_speed_and_distance(output_video_frames, tracks)
 
     # Enregistrer video
     save_video(ouput_video_frames, 'output_videos/output_video.avi')
