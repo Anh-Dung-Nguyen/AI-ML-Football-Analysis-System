@@ -1,8 +1,9 @@
 # AI ML Football Analysis System
-1. Il faut télécharger bibliothèque ultralytics, torch, torchaudio, torchgen, torchvision.
-2. Exécuter yolo_inference.py file avec la vidéo dans fichier input_video.
-3. Il sera créer un fichier nommé "runs" qui contient un video avec des objets détectés sous le format de avi.
-4. Il sera créer un fichier qui s'appelle yolov8x.pt
-5. J'utilise Google Colab pour entraîner des données. Vous pouvez voir fichier .ipynb dans training
-6. D'après exécuter le code étape par étape, vous pouvez voir dans runs/detect/train/weights 2 fichiers qui s'appellent best.pt et last.pt.
-7. Vous créez un nouveau fichier qui s'appelle models et déposez-vous ces 2 fichiers.
+
+This project is from a challenge of Kaggle: https://www.kaggle.com/competitions/dfl-bundesliga-data-shootout/data?select=clips
+
+I have used YOLO library to detect players, referees and ball. I have applied the knowledge about KMeans and clustering that I obtained from my Data Mining class at INSA de Rennes to assign players to team from their shirt. And finally, I have succeeded in calculating speed and the distance.
+
+To run this project, it requires: Python 3.x, OpenCV, Numpy, Pandas, Matplotlib, Pytorch, ultralytics and supervison.
+
+This is the image from my final project: ![Football_Analysis][/home/nguyen-anh-dung/Nguyen Anh Dung/Project/AI ML Football Anaysis System/output_videos/Screenshot.png]
