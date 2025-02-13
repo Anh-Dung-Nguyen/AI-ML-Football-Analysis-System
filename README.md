@@ -6,4 +6,4 @@ I have used YOLO library to detect players, referees and ball. I have applied th
 
 To run this project, it requires: Python 3.x, OpenCV, Numpy, Pandas, Matplotlib, Pytorch, ultralytics and supervison.
 
-This is the image from my final project: ![Football_Analysis](output_video/Screenshot.png)
+This is the image from my final project: ![Football_Analysis](output_videos/Screenshot.png)
